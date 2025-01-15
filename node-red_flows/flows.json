@@ -1,0 +1,84 @@
+[
+    {
+        "id": "f1b1c1a0.1b1b1",
+        "type": "mqtt in",
+        "z": "d1b1c1a0.1b1b1",
+        "name": "",
+        "topic": "sensor/data",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "b1b1c1a0.1b1b1",
+        "x": 150,
+        "y": 100,
+        "wires": [
+            [
+                "f2b1c1a0.1b1b1"
+            ]
+        ]
+    },
+    {
+        "id": "f2b1c1a0.1b1b1",
+        "type": "function",
+        "z": "d1b1c1a0.1b1b1",
+        "name": "Parse Data",
+        "func": "var parts = msg.payload.split(',');\nvar temperature = parseFloat(parts[0].split(':')[1]);\nvar humidity = parseFloat(parts[1].split(':')[1]);\nmsg.payload = {\n    temperature: temperature,\n    humidity: humidity\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 350,
+        "y": 100,
+        "wires": [
+            [
+                "f3b1c1a0.1b1b1"
+            ]
+        ]
+    },
+    {
+        "id": "f3b1c1a0.1b1b1",
+        "type": "influxdb out",
+        "z": "d1b1c1a0.1b1b1",
+        "influxdb": "c1b1c1a0.1b1b1",
+        "name": "",
+        "measurement": "sensor_data",
+        "x": 550,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "b1b1c1a0.1b1b1",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "c1b1c1a0.1b1b1",
+        "type": "influxdb",
+        "z": "",
+        "hostname": "localhost",
+        "port": "8086",
+        "protocol": "http",
+        "database": "mybucket",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "",
+        "token": "admin:admin123",
+        "org": "myorg"
+    }
+]
